@@ -13,3 +13,8 @@ class Series(models.Model):
         on_delete=models.CASCADE
     )
     release_date = models.DateField()
+    image_url = models.URLField(
+        blank=True,
+        null=True,
+        help_text="URL to an image of this Labubu variant on the web"
+    )

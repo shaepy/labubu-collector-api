@@ -5,9 +5,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 # status gives us a list of official/possible response codes
 from rest_framework import status
+from rest_framework.exceptions import NotFound
 
 from .models import Franchise
 from .serializers.common import FranchiseSerializer
+from .serializers.populated import PopulatedFranchiseSerializer
 
 
 class FranchiseListView(APIView):
@@ -26,3 +28,16 @@ class FranchiseListView(APIView):
         except Exception as e:
             print('ERROR')
             return Response(e.__dict__ if e.__dict__ else str(e), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+
+
+class FranchiseDetailView(APIView):
+    def get_item(self, pk):
+        try:
+            return Franchise.objects.get(pk=pk)
+        except Franchise.DoesNotExist:
+            raise NotFound(detail="🆘 Can't find that item!")
+
+    def get(self, _request, pk):
+        franchise = self.get_item(pk=pk)
+        serialized_franchise = PopulatedFranchiseSerializer(franchise)
+        return Response(serialized_franchise.data, status=status.HTTP_200_OK)

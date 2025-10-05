@@ -29,6 +29,7 @@ class SeriesListView(APIView):
             return Response(e.__dict__ if e.__dict__ else str(e), status=status.HTTP_422_UNPROCESSABLE_ENTITY)
 
 
+# shoould also return ALL the items in that series set
 class SeriesDetailView(APIView):
     def get_a_series(self, pk):
         try:

@@ -13,3 +13,8 @@ class Item(models.Model):
         related_name="items",
         on_delete=models.CASCADE
     )
+    image_url = models.URLField(
+        blank=True,
+        null=True,
+        help_text="URL to an image of this Labubu variant on the web"
+    )
